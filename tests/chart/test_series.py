@@ -499,23 +499,25 @@ class DescribeSeriesCollection(object):
     # fixtures -------------------------------------------------------
 
     @pytest.fixture(params=[
-        ('c:barChart/c:ser',               0),
-        ('c:barChart/(c:ser,c:ser,c:ser)', 2),
-        ('c:chartSpace/(c:barChart/(c:ser/c:idx{val=0},c:ser/c:idx{val=1}),c'
-         ':lineChart/c:ser/c:idx{val=2})', 2),
+        ('c:barChart/c:ser/c:order{val=1}', 0, 0),
+        ('c:barChart/(c:ser/c:order{val=2},c:ser/c:order{val=1})', 0, 1),
+        # TODO: this case needs to be revisited after resolving multi-plot
+        ('c:chartSpace/(c:barChart/(c:ser/(c:idx{val=7},c:order{val=1}),c:se'
+         'r/(c:idx{val=3},c:order{val=0})),c:lineChart/c:ser/(c:idx{val=9},c'
+         ':order{val=3}))', 2, 2),
     ])
     def getitem_fixture(self, request, _SeriesFactory_, series_):
-        cxml, idx = request.param
+        cxml, series_idx, element_idx = request.param
         parent_elm = element(cxml)
-        ser = parent_elm.xpath('.//c:ser')[idx]
+        ser = parent_elm.xpath('.//c:ser')[element_idx]
         series_collection = SeriesCollection(parent_elm)
-        return series_collection, idx, _SeriesFactory_, ser, series_
+        return series_collection, series_idx, _SeriesFactory_, ser, series_
 
     @pytest.fixture(params=[
-        ('c:barChart',                     0),
-        ('c:barChart/c:ser',               1),
-        ('c:barChart/(c:ser,c:ser)',       2),
-        ('c:barChart/(c:idx,c:tx,c:ser)',  1),
+        ('c:barChart', 0),
+        ('c:barChart/c:ser/c:order{val=0}', 1),
+        ('c:barChart/(c:ser/c:order{val=1},c:ser/c:order{val=0})', 2),
+        ('c:barChart/(c:idx,c:tx,c:ser/c:order{val=0})', 1),
         ('c:chartSpace/(c:barChart/(c:ser/c:idx{val=0},c:ser/c:idx{val=1}),c'
          ':lineChart/c:ser/c:idx{val=2})', 3),
     ])
