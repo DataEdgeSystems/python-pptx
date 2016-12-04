@@ -518,8 +518,8 @@ class DescribeSeriesCollection(object):
         ('c:barChart/c:ser/c:order{val=0}', 1),
         ('c:barChart/(c:ser/c:order{val=1},c:ser/c:order{val=0})', 2),
         ('c:barChart/(c:idx,c:tx,c:ser/c:order{val=0})', 1),
-        ('c:chartSpace/(c:barChart/(c:ser/c:idx{val=0},c:ser/c:idx{val=1}),c'
-         ':lineChart/c:ser/c:idx{val=2})', 3),
+        ('c:chartSpace/(c:barChart/(c:ser/c:order{val=0},c:ser/c:order{val=1'
+         '}),c:lineChart/c:ser/c:order{val=2})', 3),
     ])
     def len_fixture(self, request):
         xChart_cxml, expected_len = request.param

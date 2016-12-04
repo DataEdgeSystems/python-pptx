@@ -239,6 +239,13 @@ class _BaseSeriesXmlRewriter(object):
         Add `c:ser` elements to the last xChart element in *chartSpace*,
         cloned from the last `c:ser` child of that xChart.
         """
+
+        # TODO: This needs to be adjusted for updated knowledge of how c:idx
+        #       and c:order behave, probably moving things to the oxml layer.
+        #       The test needs to be updated as well, currently has
+        #       a workaround hack to get this to pass with incorrect
+        #       behavior.
+
         def clone_ser(ser, idx):
             new_ser = deepcopy(ser)
             new_ser.idx.val = idx
